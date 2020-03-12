@@ -14,7 +14,7 @@ class MyApp extends StatefulWidget {
 
 class HomePage extends State<MyApp> {
   GoogleMapController mapController;
-  LatLng coordinates = LatLng(0, 0);
+  LatLng coordinates;
   bool gotCoords = false;
 
   void initState() {
@@ -40,7 +40,7 @@ class HomePage extends State<MyApp> {
           },
           initialCameraPosition: CameraPosition(
             target: coordinates,
-            zoom: 10.0,
+            zoom: 15.0,
           ),
         ):
         Center(
