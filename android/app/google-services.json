@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "733100959613",
+    "firebase_url": "https://aggie-explore.firebaseio.com",
+    "project_id": "aggie-explore",
+    "storage_bucket": "aggie-explore.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:733100959613:android:1f6ac968292e5ce8924e14",
+        "android_client_info": {
+          "package_name": "com.example.aggie_explore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "733100959613-jk4bf9icvahss6akfbnqmm3cmn38u11i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-jWDA1O_IpFL9-8IYzZgE97nd4T91GlU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "733100959613-jk4bf9icvahss6akfbnqmm3cmn38u11i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
