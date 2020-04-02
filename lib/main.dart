@@ -49,7 +49,8 @@ class HomePage extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
+      home: Builder(
+        builder: (context) => Scaffold(
         appBar: AppBar(
           title: Text('<User Information to be added>'),
         ),
@@ -76,7 +77,11 @@ class HomePage extends State<MyApp> {
                 elevation: 10,
               ),
               RaisedButton(
-                onPressed: () => setState(() => selected = 1),
+                onPressed: () => {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FriendsPage()),
+                )
+                },
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(13.5),
                 ),
@@ -86,7 +91,11 @@ class HomePage extends State<MyApp> {
                 elevation: 10
               ),
               RaisedButton(
-                onPressed: () {setState(() => selected = 2);},
+                onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
+                },
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(13.5),
                 ),
@@ -99,6 +108,7 @@ class HomePage extends State<MyApp> {
           )
         ),
       ),
+    )
     );
   }
 }
@@ -142,3 +152,130 @@ class Map extends StatelessWidget {
   }
 }
 
+class FriendsPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("FriendsPage"),
+      ),
+      body: Center(
+          child: Text('Go back!'),
+        ),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.white.withOpacity(0.0),
+          child: ButtonBar(
+            alignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyApp()),
+                );
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(13.5),
+                ),
+                child: const Text("Home", style: TextStyle(fontSize: 30)),
+                color: (selected == 0) ? Colors.orange[300] : Colors.orange[200],
+                textColor: Colors.black,
+                elevation: 10,
+              ),
+              RaisedButton(
+                onPressed: () => {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FriendsPage()),
+                )
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(13.5),
+                ),
+                child: const Text("Friends", style: TextStyle(fontSize: 30)),
+                color: (selected == 1) ? Colors.orange[300] : Colors.orange[200],
+                textColor: Colors.black,
+                elevation: 10
+              ),
+              RaisedButton(
+                onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(13.5),
+                ),
+                child: const Text("Profile", style: TextStyle(fontSize: 30)),
+                color: (selected == 2) ? Colors.orange[300] : Colors.orange[200],
+                textColor: Colors.black,
+                elevation: 10,
+              ),
+            ],
+          )
+        ),
+      );
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Profile Page"),
+      ),
+      body: Center(
+          child: Text('Go back!'),
+        ),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.white.withOpacity(0.0),
+          child: ButtonBar(
+            alignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              RaisedButton(
+                onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MyApp()),
+                );
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(13.5),
+                ),
+                child: const Text("Home", style: TextStyle(fontSize: 30)),
+                color: (selected == 0) ? Colors.orange[300] : Colors.orange[200],
+                textColor: Colors.black,
+                elevation: 10,
+              ),
+              RaisedButton(
+                onPressed: () => {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => FriendsPage()),
+                )
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(13.5),
+                ),
+                child: const Text("Friends", style: TextStyle(fontSize: 30)),
+                color: (selected == 1) ? Colors.orange[300] : Colors.orange[200],
+                textColor: Colors.black,
+                elevation: 10
+              ),
+              RaisedButton(
+                onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                );
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(13.5),
+                ),
+                child: const Text("Profile", style: TextStyle(fontSize: 30)),
+                color: (selected == 2) ? Colors.orange[300] : Colors.orange[200],
+                textColor: Colors.black,
+                elevation: 10,
+              ),
+            ],
+          )
+        ),
+      );
+  }
+}
