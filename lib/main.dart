@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
 int selected = 0;
+var userId = "L91n5oq9UtI10FWEUg81";
 
 void main() => runApp(MyApp());
 
@@ -34,9 +35,43 @@ class HomePage extends State<MyApp> {
   ];
   
   */
+  /*
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
+
+  }
+
+  Widget _buildBody(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection("user_info").snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Text("...");
+        }
+        else {
+          return _buildList(context, snapshot.data.documents);
+        }
+      }
+    )
+  }
+  */
+  var usrId = "L91n5oq9UtI10FWEUg81";
+  /*
+  Text getUsrInfo() {
+    Firestore.instance.collection("user_info").document(usrId).get().then((DocumentSnapshot snapshot) {
+          return snapshot.data["username"].toString();
+    });
+    var document = await Firestore.instance.collection("user_info").document(usrId);
+    document.get() => then((document) {
+        return document("username");
+    });
+  }
+  */
+
   void initState() {
 
     super.initState();
+
+    
     
     Geolocator().getCurrentPosition().then((c) {
       setState(() {
@@ -46,13 +81,24 @@ class HomePage extends State<MyApp> {
     });
   }
 
+  //var usrname = "<Waiting for user information.>";
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Builder(
         builder: (context) => Scaffold(
         appBar: AppBar(
-          title: Text('<User Information to be added>'),
+            title: StreamBuilder(
+                stream: Firestore.instance.collection("user_info").document(usrId).snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return new Text("<Waiting for user information.");
+                  }
+                  var usrDoc = snapshot.data;
+                  return new Text(usrDoc["username"] + "     Lvl " + usrDoc["level"].toString());
+                }
+            )
         ),
         body: (selected == 0)? Map(
           gotCoords: _gotCoords,
