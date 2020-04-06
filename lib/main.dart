@@ -276,6 +276,52 @@ class ProfilePage extends StatelessWidget {
         title: Text("Profile Page"),
       ),
       body: Center(
+          child: StreamBuilder (
+            stream: Firestore.instance.collection("user_info").document("L91n5oq9UtI10FWEUg81").snapshots(),
+            builder: (context, snapshot) {
+                var l = <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    margin: EdgeInsets.all(16.0),
+                    child: 
+                      Text('Current Challenges',
+                      style: TextStyle(
+                        backgroundColor: Colors.yellow,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                ];
+                if (!snapshot.hasData) {
+                  return ListView(children: l);
+                }
+                var usrDoc = snapshot.data;
+                List<int> challenges = List.from(usrDoc["current challenges"]);
+                for (var i = 0; i < challenges.length; i++) {
+                      l.add(
+                        Container(
+                          padding: EdgeInsets.all(16.0),
+                          margin: EdgeInsets.all(16.0),
+                          child: 
+                            Text('Challenge ' + challenges[i].toString(),
+                            style: TextStyle(
+                              backgroundColor: Colors.yellow,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                        ),
+                    ),
+                  );
+                }
+                return ListView(children: l);
+            }
+          )
+        ),
+        /*
+        body: Center(
           child: 
             Column(
             children: [
@@ -334,6 +380,7 @@ class ProfilePage extends StatelessWidget {
             ],
           )
           ),
+        */
         bottomNavigationBar: BottomAppBar(
           color: Colors.white.withOpacity(0.0),
           child: ButtonBar(
