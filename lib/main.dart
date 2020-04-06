@@ -203,10 +203,16 @@ class FriendsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("FriendsPage"),
+        title: Text("Friends Page"),
       ),
       body: Center(
-          child: Text('Go back!'),
+          child: 
+            Column(
+            children: [
+              Text('Go back!'),
+    
+            ],
+          ),
         ),
         bottomNavigationBar: BottomAppBar(
           color: Colors.white.withOpacity(0.0),
@@ -270,8 +276,64 @@ class ProfilePage extends StatelessWidget {
         title: Text("Profile Page"),
       ),
       body: Center(
-          child: Text('Go back!'),
-        ),
+          child: 
+            Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(16.0),
+                margin: EdgeInsets.all(16.0),
+                child: 
+                  Text('Current Challenges', 
+                    style: TextStyle(
+                    backgroundColor: Colors.yellow,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(16.0),
+                margin: EdgeInsets.all(16.0),
+                child: 
+                  Text('Challenge 1', 
+                    style: TextStyle(
+                    backgroundColor: Colors.yellow,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(16.0),
+                margin: EdgeInsets.all(16.0),
+                child: 
+                  Text('Challenge 2', 
+                    style: TextStyle(
+                    backgroundColor: Colors.yellow,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(16.0),
+                margin: EdgeInsets.all(16.0),
+                child: 
+                  Text('Challenge 3', 
+                    style: TextStyle(
+                    backgroundColor: Colors.yellow,
+                    fontSize: 30,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          )
+          ),
         bottomNavigationBar: BottomAppBar(
           color: Colors.white.withOpacity(0.0),
           child: ButtonBar(
@@ -322,6 +384,6 @@ class ProfilePage extends StatelessWidget {
             ],
           )
         ),
-      );
+    );
   }
 }
