@@ -16,7 +16,7 @@ class MyApp extends StatefulWidget {
 
 
 class HomePage extends State<MyApp> {
-  
+
   //GoogleMapController mapController;
   LatLng _coordinates;
   bool _gotCoords = false;
@@ -71,8 +71,8 @@ class HomePage extends State<MyApp> {
 
     super.initState();
 
-    
-    
+
+
     Geolocator().getCurrentPosition().then((c) {
       setState(() {
         _coordinates = LatLng(c.latitude, c.longitude);
@@ -86,75 +86,75 @@ class HomePage extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Builder(
-        builder: (context) => Scaffold(
-        appBar: AppBar(
-            title: StreamBuilder(
-                stream: Firestore.instance.collection("user_info").document(usrId).snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return new Text("<Waiting for user information.");
-                  }
-                  var usrDoc = snapshot.data;
-                  return new Text(usrDoc["username"] + "     Lvl " + usrDoc["level"].toString());
-                }
-            )
-        ),
-        body: (selected == 0)? Map(
-          gotCoords: _gotCoords,
-          coordinates: _coordinates,
-        ):
-        Center(
-          child: Text("Frends/Profile page"),
-        ),
-        bottomNavigationBar: BottomAppBar(
-          color: Colors.white.withOpacity(0.0),
-          child: ButtonBar(
-            alignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              RaisedButton(
-                onPressed: () {setState(() => selected = 0);},
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(13.5),
-                ),
-                child: const Text("Home", style: TextStyle(fontSize: 30)),
-                color: (selected == 0) ? Colors.orange[300] : Colors.orange[200],
-                textColor: Colors.black,
-                elevation: 10,
-              ),
-              RaisedButton(
-                onPressed: () => {Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => FriendsPage()),
+        home: Builder(
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+                title: StreamBuilder(
+                    stream: Firestore.instance.collection("user_info").document(usrId).snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return new Text("<Waiting for user information.");
+                      }
+                      var usrDoc = snapshot.data;
+                      return new Text(usrDoc["username"] + "     Lvl " + usrDoc["level"].toString());
+                    }
                 )
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(13.5),
-                ),
-                child: const Text("Friends", style: TextStyle(fontSize: 30)),
-                color: (selected == 1) ? Colors.orange[300] : Colors.orange[200],
-                textColor: Colors.black,
-                elevation: 10
-              ),
-              RaisedButton(
-                onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(13.5),
-                ),
-                child: const Text("Profile", style: TextStyle(fontSize: 30)),
-                color: (selected == 2) ? Colors.orange[300] : Colors.orange[200],
-                textColor: Colors.black,
-                elevation: 10,
-              ),
-            ],
-          )
-        ),
-      ),
-    )
+            ),
+            body: (selected == 0)? Map(
+              gotCoords: _gotCoords,
+              coordinates: _coordinates,
+            ):
+            Center(
+              child: Text("Frends/Profile page"),
+            ),
+            bottomNavigationBar: BottomAppBar(
+                color: Colors.white.withOpacity(0.0),
+                child: ButtonBar(
+                  alignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    RaisedButton(
+                      onPressed: () {setState(() => selected = 0);},
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(13.5),
+                      ),
+                      child: const Text("Home", style: TextStyle(fontSize: 30)),
+                      color: (selected == 0) ? Colors.orange[300] : Colors.orange[200],
+                      textColor: Colors.black,
+                      elevation: 10,
+                    ),
+                    RaisedButton(
+                        onPressed: () => {Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => FriendsPage()),
+                        )
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(13.5),
+                        ),
+                        child: const Text("Friends", style: TextStyle(fontSize: 30)),
+                        color: (selected == 1) ? Colors.orange[300] : Colors.orange[200],
+                        textColor: Colors.black,
+                        elevation: 10
+                    ),
+                    RaisedButton(
+                      onPressed: () {Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                      );
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(13.5),
+                      ),
+                      child: const Text("Profile", style: TextStyle(fontSize: 30)),
+                      color: (selected == 1) ? Colors.orange[300] : Colors.orange[200],
+                      textColor: Colors.black,
+                      elevation: 10,
+                    ),
+                  ],
+                )
+            ),
+          ),
+        )
     );
   }
 }
@@ -183,14 +183,14 @@ class Map extends StatelessWidget {
   ];
   Widget build(BuildContext context) {
     return gotCoords? GoogleMap(
-            onMapCreated: (GoogleMapController controller) {
-              mapController = controller;
-            },
-            initialCameraPosition: CameraPosition(
-              target: coordinates,
-              zoom: 15.0,
-            ), // CameraPosition
-            markers: Set.from(markers),
+      onMapCreated: (GoogleMapController controller) {
+        mapController = controller;
+      },
+      initialCameraPosition: CameraPosition(
+        target: coordinates,
+        zoom: 15.0,
+      ), // CameraPosition
+      markers: Set.from(markers),
     ):
     Center(
       child: Text("Waiting for location services."),
@@ -206,65 +206,65 @@ class FriendsPage extends StatelessWidget {
         title: Text("Friends Page"),
       ),
       body: Center(
-          child: 
-            Column(
-            children: [
-              Text('Go back!'),
-    
-            ],
-          ),
+        child:
+        Column(
+          children: [
+            Text('Go back!'),
+
+          ],
         ),
-        bottomNavigationBar: BottomAppBar(
+      ),
+      bottomNavigationBar: BottomAppBar(
           color: Colors.white.withOpacity(0.0),
           child: ButtonBar(
             alignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               RaisedButton(
                 onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyApp()),
+                  context,
+                  MaterialPageRoute(builder: (context) => MyApp()),
                 );
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(13.5),
                 ),
                 child: const Text("Home", style: TextStyle(fontSize: 30)),
-                color: (selected == 0) ? Colors.orange[300] : Colors.orange[200],
+                color: (selected == 1) ? Colors.orange[300] : Colors.orange[200],
                 textColor: Colors.black,
                 elevation: 10,
               ),
               RaisedButton(
-                onPressed: () => {Navigator.push(
+                  onPressed: () => {Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => FriendsPage()),
-                )
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(13.5),
-                ),
-                child: const Text("Friends", style: TextStyle(fontSize: 30)),
-                color: (selected == 1) ? Colors.orange[300] : Colors.orange[200],
-                textColor: Colors.black,
-                elevation: 10
+                  )
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(13.5),
+                  ),
+                  child: const Text("Friends", style: TextStyle(fontSize: 30)),
+                  color: (selected == 0) ? Colors.orange[300] : Colors.orange[200],
+                  textColor: Colors.black,
+                  elevation: 10
               ),
               RaisedButton(
                 onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
                 );
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(13.5),
                 ),
                 child: const Text("Profile", style: TextStyle(fontSize: 30)),
-                color: (selected == 2) ? Colors.orange[300] : Colors.orange[200],
+                color: (selected == 1) ? Colors.orange[300] : Colors.orange[200],
                 textColor: Colors.black,
                 elevation: 10,
               ),
             ],
           )
-        ),
-      );
+      ),
+    );
   }
 }
 
@@ -277,14 +277,14 @@ class ProfilePage extends StatelessWidget {
       ),
       body: Center(
           child: StreamBuilder (
-            stream: Firestore.instance.collection("user_info").document("L91n5oq9UtI10FWEUg81").snapshots(),
-            builder: (context, snapshot) {
+              stream: Firestore.instance.collection("user_info").document("L91n5oq9UtI10FWEUg81").snapshots(),
+              builder: (context, snapshot) {
                 var l = <Widget>[
                   Container(
                     padding: EdgeInsets.all(16.0),
                     margin: EdgeInsets.all(16.0),
-                    child: 
-                      Text('Current Challenges',
+                    child:
+                    Text('Current Challenges',
                       style: TextStyle(
                         backgroundColor: Colors.yellow,
                         fontSize: 30,
@@ -300,27 +300,27 @@ class ProfilePage extends StatelessWidget {
                 var usrDoc = snapshot.data;
                 List<int> challenges = List.from(usrDoc["current challenges"]);
                 for (var i = 0; i < challenges.length; i++) {
-                      l.add(
-                        Container(
-                          padding: EdgeInsets.all(16.0),
-                          margin: EdgeInsets.all(16.0),
-                          child: 
-                            Text('Challenge ' + challenges[i].toString(),
-                            style: TextStyle(
-                              backgroundColor: Colors.yellow,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white,
-                            ),
+                  l.add(
+                    Container(
+                      padding: EdgeInsets.all(16.0),
+                      margin: EdgeInsets.all(16.0),
+                      child:
+                      Text('Challenge ' + challenges[i].toString(),
+                        style: TextStyle(
+                          backgroundColor: Colors.yellow,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
                         ),
+                      ),
                     ),
                   );
                 }
                 return ListView(children: l);
-            }
+              }
           )
-        ),
-        /*
+      ),
+      /*
         body: Center(
           child: 
             Column(
@@ -381,56 +381,56 @@ class ProfilePage extends StatelessWidget {
           )
           ),
         */
-        bottomNavigationBar: BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
           color: Colors.white.withOpacity(0.0),
           child: ButtonBar(
             alignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               RaisedButton(
                 onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyApp()),
+                  context,
+                  MaterialPageRoute(builder: (context) => MyApp()),
                 );
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(13.5),
                 ),
                 child: const Text("Home", style: TextStyle(fontSize: 30)),
-                color: (selected == 0) ? Colors.orange[300] : Colors.orange[200],
+                color: (selected == 1) ? Colors.orange[300] : Colors.orange[200],
                 textColor: Colors.black,
                 elevation: 10,
               ),
               RaisedButton(
-                onPressed: () => {Navigator.push(
+                  onPressed: () => {Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => FriendsPage()),
-                )
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(13.5),
-                ),
-                child: const Text("Friends", style: TextStyle(fontSize: 30)),
-                color: (selected == 1) ? Colors.orange[300] : Colors.orange[200],
-                textColor: Colors.black,
-                elevation: 10
+                  )
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(13.5),
+                  ),
+                  child: const Text("Friends", style: TextStyle(fontSize: 30)),
+                  color: (selected == 1) ? Colors.orange[300] : Colors.orange[200],
+                  textColor: Colors.black,
+                  elevation: 10
               ),
               RaisedButton(
                 onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
                 );
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(13.5),
                 ),
                 child: const Text("Profile", style: TextStyle(fontSize: 30)),
-                color: (selected == 2) ? Colors.orange[300] : Colors.orange[200],
+                color: (selected == 0) ? Colors.orange[300] : Colors.orange[200],
                 textColor: Colors.black,
                 elevation: 10,
               ),
             ],
           )
-        ),
+      ),
     );
   }
 }
