@@ -33,7 +33,7 @@ class HomePage extends State<MyApp> {
       ),
     )
   ];
-  
+
   */
   /*
   Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
@@ -98,7 +98,8 @@ class HomePage extends State<MyApp> {
                       var usrDoc = snapshot.data;
                       return new Text(usrDoc["username"] + "     Lvl " + usrDoc["level"].toString());
                     }
-                )
+                ),
+                backgroundColor: Color.fromRGBO(80, 0, 0, 1.0),
             ),
             body: (selected == 0)? Map(
               gotCoords: _gotCoords,
@@ -108,7 +109,7 @@ class HomePage extends State<MyApp> {
               child: Text("Frends/Profile page"),
             ),
             bottomNavigationBar: BottomAppBar(
-                color: Colors.white.withOpacity(0.0),
+                color: Color.fromRGBO(80, 0, 0, 1.0),
                 child: ButtonBar(
                   alignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -204,6 +205,7 @@ class FriendsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Friends Page"),
+        backgroundColor: Color.fromRGBO(80, 0, 0, 1.0),
       ),
       body: Center(
         child:
@@ -215,7 +217,7 @@ class FriendsPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-          color: Colors.white.withOpacity(0.0),
+          color: Color.fromRGBO(80, 0, 0, 1.0),
           child: ButtonBar(
             alignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -274,6 +276,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile Page"),
+        backgroundColor: Color.fromRGBO(80, 0, 0, 1.0),
       ),
       body: Center(
           child: StreamBuilder (
@@ -322,14 +325,14 @@ class ProfilePage extends StatelessWidget {
       ),
       /*
         body: Center(
-          child: 
+          child:
             Column(
             children: [
               Container(
                 padding: EdgeInsets.all(16.0),
                 margin: EdgeInsets.all(16.0),
-                child: 
-                  Text('Current Challenges', 
+                child:
+                  Text('Current Challenges',
                     style: TextStyle(
                     backgroundColor: Colors.yellow,
                     fontSize: 30,
@@ -341,8 +344,8 @@ class ProfilePage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(16.0),
                 margin: EdgeInsets.all(16.0),
-                child: 
-                  Text('Challenge 1', 
+                child:
+                  Text('Challenge 1',
                     style: TextStyle(
                     backgroundColor: Colors.yellow,
                     fontSize: 30,
@@ -354,8 +357,8 @@ class ProfilePage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(16.0),
                 margin: EdgeInsets.all(16.0),
-                child: 
-                  Text('Challenge 2', 
+                child:
+                  Text('Challenge 2',
                     style: TextStyle(
                     backgroundColor: Colors.yellow,
                     fontSize: 30,
@@ -367,8 +370,8 @@ class ProfilePage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(16.0),
                 margin: EdgeInsets.all(16.0),
-                child: 
-                  Text('Challenge 3', 
+                child:
+                  Text('Challenge 3',
                     style: TextStyle(
                     backgroundColor: Colors.yellow,
                     fontSize: 30,
@@ -382,7 +385,7 @@ class ProfilePage extends StatelessWidget {
           ),
         */
       bottomNavigationBar: BottomAppBar(
-          color: Colors.white.withOpacity(0.0),
+          color: Color.fromRGBO(80, 0, 0, 1.0),
           child: ButtonBar(
             alignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
