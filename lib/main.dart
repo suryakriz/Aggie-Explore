@@ -4,6 +4,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 
+import 'CollectionOperations.dart';
+
 int selected = 0;
 var userId = "L91n5oq9UtI10FWEUg81";
 
@@ -21,57 +23,12 @@ class HomePage extends State<MyApp> {
   LatLng _coordinates;
   bool _gotCoords = false;
 
-  /*
-  // Temporary in-progress example marker implementation.
-  List<Marker> markers = [
-    Marker(
-      markerId: MarkerId('Challenge 1'),
-      draggable: false,
-      position: LatLng(37.4244, -122.0824),
-      infoWindow: InfoWindow(
-        title: 'Challenge 1',
-      ),
-    )
-  ];
 
-  */
-  /*
-  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
-
-  }
-
-  Widget _buildBody(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection("user_info").snapshots(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return Text("...");
-        }
-        else {
-          return _buildList(context, snapshot.data.documents);
-        }
-      }
-    )
-  }
-  */
   var usrId = "L91n5oq9UtI10FWEUg81";
-  /*
-  Text getUsrInfo() {
-    Firestore.instance.collection("user_info").document(usrId).get().then((DocumentSnapshot snapshot) {
-          return snapshot.data["username"].toString();
-    });
-    var document = await Firestore.instance.collection("user_info").document(usrId);
-    document.get() => then((document) {
-        return document("username");
-    });
-  }
-  */
 
   void initState() {
 
     super.initState();
-
-
 
     Geolocator().getCurrentPosition().then((c) {
       setState(() {
@@ -79,6 +36,7 @@ class HomePage extends State<MyApp> {
         _gotCoords = true;
       });
     });
+    
   }
 
   //var usrname = "<Waiting for user information.>";
