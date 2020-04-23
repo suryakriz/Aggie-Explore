@@ -77,7 +77,7 @@ class HomePage extends State<MyApp> {
                         borderRadius: new BorderRadius.circular(13.5),
                       ),
                       child: const Text("Home", style: TextStyle(fontSize: 30)),
-                      color: (selected == 0) ? Colors.orange[300] : Colors.orange[200],
+                      color: (selected == 0) ? Colors.orange[500] : Colors.orange[200],
                       textColor: Colors.black,
                       elevation: 10,
                     ),
@@ -161,6 +161,7 @@ class FriendsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffd7f3f5),
       appBar: AppBar(
         title: Text("Friends Page"),
         backgroundColor: Color.fromRGBO(80, 0, 0, 1.0),
@@ -203,7 +204,7 @@ class FriendsPage extends StatelessWidget {
                     borderRadius: new BorderRadius.circular(13.5),
                   ),
                   child: const Text("Friends", style: TextStyle(fontSize: 30)),
-                  color: (selected == 0) ? Colors.orange[300] : Colors.orange[200],
+                  color: (selected == 0) ? Colors.orange[500] : Colors.orange[200],
                   textColor: Colors.black,
                   elevation: 10
               ),
@@ -232,6 +233,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffd7f3f5),
       appBar: AppBar(
         title: Text("Profile Page"),
         backgroundColor: Color.fromRGBO(80, 0, 0, 1.0),
@@ -247,10 +249,10 @@ class ProfilePage extends StatelessWidget {
                     child:
                     Text('Current Challenges',
                       style: TextStyle(
-                        backgroundColor: Colors.yellow,
+                        //backgroundColor: Colors.yellow,
                         fontSize: 30,
                         fontWeight: FontWeight.w400,
-                        color: Colors.white,
+                        color: Color.fromRGBO(80, 0, 0, 1.0),
                       ),
                     ),
                   )
@@ -268,10 +270,10 @@ class ProfilePage extends StatelessWidget {
                       child:
                       Text('Challenge ' + challenges[i].toString(),
                         style: TextStyle(
-                          backgroundColor: Colors.yellow,
+                          //backgroundColor: Colors.yellow,
                           fontSize: 30,
                           fontWeight: FontWeight.w400,
-                          color: Colors.white,
+                          color: Color.fromRGBO(80, 0, 0, 1.0),
                         ),
                       ),
                     ),
@@ -385,7 +387,7 @@ class ProfilePage extends StatelessWidget {
                   borderRadius: new BorderRadius.circular(13.5),
                 ),
                 child: const Text("Profile", style: TextStyle(fontSize: 30)),
-                color: (selected == 0) ? Colors.orange[300] : Colors.orange[200],
+                color: (selected == 0) ? Colors.orange[500] : Colors.orange[200],
                 textColor: Colors.black,
                 elevation: 10,
               ),
