@@ -242,6 +242,9 @@ class ProfilePage extends StatelessWidget {
           child: StreamBuilder (
               stream: Firestore.instance.collection("user_info").document("L91n5oq9UtI10FWEUg81").snapshots(),
               builder: (context, snapshot) {
+                
+                String curr_challenges = "Current Challenges";
+          
                 var l = <Widget>[
                   Container(
                     padding: EdgeInsets.all(16.0),
@@ -267,15 +270,32 @@ class ProfilePage extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(16.0),
                       margin: EdgeInsets.all(16.0),
-                      child:
-                      Text('Challenge ' + challenges[i].toString(),
-                        style: TextStyle(
-                          //backgroundColor: Colors.yellow,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w400,
-                          color: Color.fromRGBO(80, 0, 0, 1.0),
-                        ),
-                      ),
+                      child: StreamBuilder(
+                        stream: Firestore.instance.collection("Markers").where("challenge number", isEqualTo: challenges[i]).snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                              return RichText(text: TextSpan(text: 'Waiting for data...'));
+                          }
+                          //return Text(snapshot.data.documents[0].data["name"]);
+                          return RichText(
+                            text: TextSpan(
+                              text: "Challege " + challenges[i].toString(),
+                              style: TextStyle(
+                                //backgroundColor: Colors.yellow,
+                                fontSize: 30, 
+                                fontWeight: FontWeight.w400, 
+                                color: Color.fromRGBO(80, 0, 0, 1.0),
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: snapshot.data.documents[0].data["name"],
+                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Color.fromRGBO(80, 0, 0, 1.0),),
+                                )
+                              ]
+                            )
+                          );
+                        }
+                      )
                     ),
                   );
                 }
