@@ -22,14 +22,45 @@ class HomePage extends State<MyApp> {
   //GoogleMapController mapController;
   LatLng _coordinates;
   bool _gotCoords = false;
+  bool _gotMarkers = false;
 
 
   var usrId = "L91n5oq9UtI10FWEUg81";
+
+  List<Marker> markers = [];
+
 
   void initState() {
 
     super.initState();
 
+    // Get list of markers from Firestore.
+    Firestore.instance.collection("user_info").document(userId).get().then((snapshot) {
+        var c_nos = snapshot.data["current challenges"];
+        for (int i = 0; i < c_nos.length; i++) {
+            print("\n\n\n\n\n\n\nIteration " + (i).toString() + "\n\n\n\n\n\n\n");
+            Firestore.instance.collection("Markers").where("challenge number", isEqualTo: c_nos[i]).getDocuments().then((querySnapshot) {
+                GeoPoint geo_pt = querySnapshot.documents[0].data["location"];
+                markers.add(
+                  Marker (
+                      markerId: MarkerId('Challenge ' + (i).toString()),
+                      draggable: false,
+                      position: LatLng(geo_pt.latitude, geo_pt.longitude),
+                      infoWindow: InfoWindow (
+                        title: 'Challenge ' + (i).toString(),
+                      ),
+                  )
+                );
+                if (markers.length == c_nos.length) {
+                  setState(() {
+                    _gotMarkers = true;
+                  });
+                }
+            });
+        }
+    });
+
+    // Get user's current position.
     Geolocator().getCurrentPosition().then((c) {
       setState(() {
         _coordinates = LatLng(c.latitude, c.longitude);
@@ -39,7 +70,6 @@ class HomePage extends State<MyApp> {
     
   }
 
-  //var usrname = "<Waiting for user information.>";
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +91,9 @@ class HomePage extends State<MyApp> {
             ),
             body: (selected == 0)? Map(
               gotCoords: _gotCoords,
+              gotMarkers: _gotMarkers,
               coordinates: _coordinates,
+              markers: markers,
             ):
             Center(
               child: Text("Frends/Profile page"),
@@ -118,30 +150,25 @@ class HomePage extends State<MyApp> {
   }
 }
 
+
 class Map extends StatelessWidget {
 
   Map({
     @required this.coordinates,
-    @required this.gotCoords
+    @required this.gotCoords,
+    @required this.gotMarkers,
+    @required this.markers,
   });
 
   GoogleMapController mapController;
   final bool gotCoords;
+  final bool gotMarkers;
   final LatLng coordinates;
+  List<Marker> markers;
 
-  // Temporary in-progress example marker implementation.
-  List<Marker> markers = [
-    Marker(
-      markerId: MarkerId('Challenge 1'),
-      draggable: false,
-      position: LatLng(37.4244, -122.0824),
-      infoWindow: InfoWindow(
-        title: 'Challenge 1',
-      ),
-    )
-  ];
+
   Widget build(BuildContext context) {
-    return gotCoords? GoogleMap(
+    return (gotCoords && gotMarkers)? GoogleMap(
       onMapCreated: (GoogleMapController controller) {
         mapController = controller;
       },
@@ -242,9 +269,7 @@ class ProfilePage extends StatelessWidget {
           child: StreamBuilder (
               stream: Firestore.instance.collection("user_info").document("L91n5oq9UtI10FWEUg81").snapshots(),
               builder: (context, snapshot) {
-                
-                String curr_challenges = "Current Challenges";
-          
+                          
                 var l = <Widget>[
                   Container(
                     padding: EdgeInsets.all(16.0),
