@@ -294,27 +294,97 @@ class ProfilePage extends StatelessWidget {
                         margin: EdgeInsets.all(16.0),
                         child: StreamBuilder(
                             stream: Firestore.instance.collection("Markers").where("challenge number", isEqualTo: challenges[i]).snapshots(),
-                            builder: (context, snapshot) {
+                            builder: (_context, snapshot) {
                               if (!snapshot.hasData) {
                                 return RichText(text: TextSpan(text: 'Waiting for data...'));
                               }
                               //return Text(snapshot.data.documents[0].data["name"]);
-                              return RichText(
-                                  text: TextSpan(
-                                      text: "Challege " + challenges[i].toString(),
-                                      style: TextStyle(
-                                        //backgroundColor: Colors.yellow,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w400,
-                                        color: Color.fromRGBO(80, 0, 0, 1.0),
-                                      ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: snapshot.data.documents[0].data["name"],
-                                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Color.fromRGBO(80, 0, 0, 1.0),),
-                                        )
-                                      ]
-                                  )
+                              return Column (
+                                children: <Widget>[
+                                  RichText (
+                                    text: TextSpan(
+                                        text: "Challege " + challenges[i].toString(),
+                                        style: TextStyle(
+                                          //backgroundColor: Colors.yellow,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.w400,
+                                          color: Color.fromRGBO(80, 0, 0, 1.0),
+                                        ),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: snapshot.data.documents[0].data["name"],
+                                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Color.fromRGBO(80, 0, 0, 1.0),),
+                                          )
+                                        ]
+                                    )
+                                  ),
+                                  RaisedButton (
+                                    onPressed: () {
+                                      
+                                      completeChallenge(userId, challenges[i]).then((void voidArg) {
+                                            Geolocator().getCurrentPosition().then((c) {
+                                                /*
+                                                setState(() {
+                                                  _coordinates = LatLng(c.latitude, c.longitude);
+                                                  _gotCoords = true;
+                                                });
+                                                */
+                                                
+                                                GeoPoint challengeLoc = snapshot.data.documents[0].data["location"];
+                                                isWithinRange (new LatLng(c.latitude, c.longitude), new LatLng(challengeLoc.latitude, challengeLoc.longitude)).then((bool inRange) {
+                                                  if (inRange) {
+                                                    completeChallenge (userId, challenges[i]);
+                                                    showDialog (
+                                                      context: _context,
+                                                      builder: (BuildContext ctx) {
+                                                        return AlertDialog (
+                                                          title: new Text("Challenge completed."),
+                                                          content: new Text("Challenge " + (i).toString() + " has been completed."),
+                                                          actions: <Widget>[
+                                                            new FlatButton (
+                                                              child: new Text ("OK"),
+                                                              onPressed: () {
+                                                                  Navigator.of(ctx).pop();
+                                                              },
+                                                            )
+                                                          ],
+                                                        );
+                                                      }
+                                                    );
+                                                  }
+                                                  else {
+                                                    showDialog (
+                                                      context: _context,
+                                                      builder: (BuildContext ctx) {
+                                                        return AlertDialog (
+                                                          title: new Text("Out of range."),
+                                                          content: new Text("You are not within range of this area."),
+                                                          actions: <Widget>[
+                                                            new FlatButton (
+                                                              child: new Text("OK"),
+                                                              onPressed: () {
+                                                                Navigator.of(ctx).pop();
+                                                              },
+                                                            )
+                                                          ],
+                                                        );
+                                                      }
+                                                    );
+                                                  }
+                                                });
+                                                
+                                            });
+                                            return;
+                                            //return 0;
+                                      });
+                                      
+                                    },
+                                    child: Text (
+                                      'BUTTON',
+                                      style: TextStyle (fontSize: 20)
+                                    ),
+                                  ),
+                                ],
                               );
                             }
                         )
