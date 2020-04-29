@@ -31,7 +31,7 @@ class Auth implements BaseAuth {
         email: email, password: password);
     FirebaseUser user = result.user;
     Firestore.instance.collection('user_info').document(user.uid)
-        .setData({'completed challenges':[], 'current challenges':[1,2,3], 'level': 1, 'username': username});
+        .setData({'completed challenges':[], 'current challenges':[1,2,3], 'level': 1, 'username': username, 'friends': []});
     return user.uid;
   }
 
