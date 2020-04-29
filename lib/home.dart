@@ -204,6 +204,9 @@ class FriendsPage extends StatelessWidget {
                     child: StreamBuilder (
                       stream: Firestore.instance.collection("user_info").document(friendsList[i]).snapshots(),
                       builder: (context2, snapshot2) {
+                        if (!snapshot2.hasData) {
+                            return new Text('Waiting for user friend data...');
+                        }
                         return Column (
                           children: <Widget>[
                             RichText (
