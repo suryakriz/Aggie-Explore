@@ -23,7 +23,6 @@ class HomePage extends State<Home> {
   //GoogleMapController mapController;
   LatLng _coordinates;
   bool _gotCoords = false;
-  bool _gotMarkers = false;
 
   List<Marker> markers = [];
 
@@ -34,24 +33,23 @@ class HomePage extends State<Home> {
     // Get list of markers from Firestore.
     Firestore.instance.collection("user_info").document(userId).get().then((snapshot) {
       var c_nos = snapshot.data["current challenges"];
+      print("\n\n\n\n\nNumber of challenges: " + (c_nos.length).toString() + "\n\n\n\n\n");
       for (int i = 0; i < c_nos.length; i++) {
         print("\n\n\n\n\n\n\nIteration " + (i).toString() + "\n\n\n\n\n\n\n");
         Firestore.instance.collection("Markers").where("challenge number", isEqualTo: c_nos[i]).getDocuments().then((querySnapshot) {
-          GeoPoint geo_pt = querySnapshot.documents[0].data["location"];
-          markers.add(
-              Marker (
-                markerId: MarkerId('Challenge ' + (i).toString()),
-                draggable: false,
-                position: LatLng(geo_pt.latitude, geo_pt.longitude),
-                infoWindow: InfoWindow (
-                  title: 'Challenge ' + (i).toString(),
-                ),
-              )
-          );
-          if (markers.length == c_nos.length) {
-            setState(() {
-              _gotMarkers = true;
-            });
+          if (querySnapshot.documents.length != 0) {
+              GeoPoint geo_pt = querySnapshot.documents[0].data["location"];
+                  markers.add(
+                      Marker (
+                        markerId: MarkerId('Challenge ' + (i).toString()),
+                        draggable: false,
+                        position: LatLng(geo_pt.latitude, geo_pt.longitude),
+                        infoWindow: InfoWindow (
+                          title: 'Challenge ' + (i).toString(),
+                        ),
+                      )
+                  );
+              setState(() {});
           }
         });
       }
@@ -88,7 +86,6 @@ class HomePage extends State<Home> {
             ),
             body: (selected == 0)? Map(
               gotCoords: _gotCoords,
-              gotMarkers: _gotMarkers,
               coordinates: _coordinates,
               markers: markers,
             ):
@@ -153,19 +150,17 @@ class Map extends StatelessWidget {
   Map({
     @required this.coordinates,
     @required this.gotCoords,
-    @required this.gotMarkers,
     @required this.markers,
   });
 
   GoogleMapController mapController;
   final bool gotCoords;
-  final bool gotMarkers;
   final LatLng coordinates;
   List<Marker> markers;
 
 
   Widget build(BuildContext context) {
-    return (gotCoords && gotMarkers)? GoogleMap(
+    return (gotCoords)? GoogleMap(
       onMapCreated: (GoogleMapController controller) {
         mapController = controller;
       },
@@ -321,62 +316,54 @@ class ProfilePage extends StatelessWidget {
                                   RaisedButton (
                                     onPressed: () {
                                       
-                                      completeChallenge(userId, challenges[i]).then((void voidArg) {
-                                            Geolocator().getCurrentPosition().then((c) {
-                                                /*
-                                                setState(() {
-                                                  _coordinates = LatLng(c.latitude, c.longitude);
-                                                  _gotCoords = true;
-                                                });
-                                                */
-                                                
-                                                GeoPoint challengeLoc = snapshot.data.documents[0].data["location"];
-                                                isWithinRange (new LatLng(c.latitude, c.longitude), new LatLng(challengeLoc.latitude, challengeLoc.longitude)).then((bool inRange) {
-                                                  if (inRange) {
-                                                    completeChallenge (userId, challenges[i]);
-                                                    showDialog (
-                                                      context: _context,
-                                                      builder: (BuildContext ctx) {
-                                                        return AlertDialog (
-                                                          title: new Text("Challenge completed."),
-                                                          content: new Text("Challenge " + (i).toString() + " has been completed."),
-                                                          actions: <Widget>[
-                                                            new FlatButton (
-                                                              child: new Text ("OK"),
-                                                              onPressed: () {
-                                                                  Navigator.of(ctx).pop();
-                                                              },
-                                                            )
-                                                          ],
-                                                        );
-                                                      }
+                                        Geolocator().getCurrentPosition().then((c) {
+                                            
+                                            GeoPoint challengeLoc = snapshot.data.documents[0].data["location"];
+                                            isWithinRange (new LatLng(c.latitude, c.longitude), new LatLng(challengeLoc.latitude, challengeLoc.longitude)).then((bool inRange) {
+                                              if (inRange) {
+                                                completeChallenge (userId, challenges[i]);
+                                                showDialog (
+                                                  context: _context,
+                                                  builder: (BuildContext ctx) {
+                                                    return AlertDialog (
+                                                      title: new Text("Challenge completed."),
+                                                      content: new Text("Challenge " + (i).toString() + " has been completed."),
+                                                      actions: <Widget>[
+                                                        new FlatButton (
+                                                          child: new Text ("OK"),
+                                                          onPressed: () {
+                                                              Navigator.of(ctx).pop();
+                                                          },
+                                                        )
+                                                      ],
                                                     );
                                                   }
-                                                  else {
-                                                    showDialog (
-                                                      context: _context,
-                                                      builder: (BuildContext ctx) {
-                                                        return AlertDialog (
-                                                          title: new Text("Out of range."),
-                                                          content: new Text("You are not within range of this area."),
-                                                          actions: <Widget>[
-                                                            new FlatButton (
-                                                              child: new Text("OK"),
-                                                              onPressed: () {
-                                                                Navigator.of(ctx).pop();
-                                                              },
-                                                            )
-                                                          ],
-                                                        );
-                                                      }
+                                                );
+                                              }
+                                              else {
+                                                showDialog (
+                                                  context: _context,
+                                                  builder: (BuildContext ctx) {
+                                                    return AlertDialog (
+                                                      title: new Text("Out of range."),
+                                                      content: new Text("You are not within range of this area."),
+                                                      actions: <Widget>[
+                                                        new FlatButton (
+                                                          child: new Text("OK"),
+                                                          onPressed: () {
+                                                            Navigator.of(ctx).pop();
+                                                          },
+                                                        )
+                                                      ],
                                                     );
                                                   }
-                                                });
-                                                
+                                                );
+                                              }
                                             });
-                                            return;
-                                            //return 0;
-                                      });
+                                            
+                                        });
+                                        return;
+                                        //return 0;
                                       
                                     },
                                     child: Text (

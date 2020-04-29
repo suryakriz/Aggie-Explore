@@ -38,7 +38,7 @@ Future<bool> isWithinRange(LatLng position, LatLng target) async {
 
   const int RANGE_CONST_METERS = 100; // If user is within this many meters of the center coordinates, they are considered to be at that location.
 
-  double dist = await Geolocator().distanceBetween(position.latitude, position.longitude, target.latitude, target.latitude);
+  double dist = await Geolocator().distanceBetween(position.latitude, position.longitude, target.latitude, target.longitude);
   print("\n\n\n\n\nDIST=" + dist.toString() + "\n\n\n\n\n");
   if (dist < RANGE_CONST_METERS) {
     return true;
