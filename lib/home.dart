@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:aggie_explore/main.dart';
 import 'dart:async';
 
 import 'CollectionOperations.dart';
@@ -302,6 +304,24 @@ class ProfilePage extends StatelessWidget {
 
                 var l = <Widget>[
                   Container(
+                    child: FlatButton(
+                      color: Color(0xffd7f3f5),
+                      textColor: Color.fromRGBO(80, 0, 0, 1.0),
+                      padding: EdgeInsets.all(0),
+                      splashColor: Colors.blueAccent,
+                      onPressed: () {FirebaseAuth.instance.signOut();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyApp()),
+                      );
+                      },
+                      child: Text(
+                        "Sign out",
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                  Container(
                     padding: EdgeInsets.all(12.0),
                     margin: EdgeInsets.all(12.0),
                     child:
@@ -336,82 +356,82 @@ class ProfilePage extends StatelessWidget {
                               return Column (
                                 children: <Widget>[
                                   RichText (
-                                    textAlign: TextAlign.center,
-                                    text: TextSpan(
-                                        text: "Challenge " + challenges[i].toString() + ":\n",
-                                        style: TextStyle(
-                                          //backgroundColor: Colors.yellow,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w400,
-                                          color: Color.fromRGBO(80, 0, 0, 1.0),
-                                        ),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text: snapshot.data.documents[0].data["name"],
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan(
+                                          text: "Challenge " + challenges[i].toString() + ":\n",
+                                          style: TextStyle(
+                                            //backgroundColor: Colors.yellow,
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w400,
+                                            color: Color.fromRGBO(80, 0, 0, 1.0),
+                                          ),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: snapshot.data.documents[0].data["name"],
 
-                                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Color.fromRGBO(80, 0, 0, 1.0),),
-                                          )
-                                        ]
-                                    )
+                                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Color.fromRGBO(80, 0, 0, 1.0),),
+                                            )
+                                          ]
+                                      )
                                   ),
                                   RaisedButton (
                                     onPressed: () {
-                                      
-                                        Geolocator().getCurrentPosition().then((c) {
-                                            
-                                            GeoPoint challengeLoc = snapshot.data.documents[0].data["location"];
-                                            isWithinRange (new LatLng(c.latitude, c.longitude), new LatLng(challengeLoc.latitude, challengeLoc.longitude)).then((bool inRange) {
-                                              if (inRange) {
-                                                completeChallenge (userId, challenges[i]);
-                                                int points = snapshot.data.documents[0].data["points"];
-                                                incrementUsrLevel(userId, points);
-                                                showDialog (
-                                                  context: _context,
-                                                  builder: (BuildContext ctx) {
-                                                    return AlertDialog (
-                                                      title: new Text("Challenge " + i.toString() + " completed."),
-                                                      content: new Text("You have advanced by " + points.toString() +" " + ((points == 1)? "point" : "points") + "."),
-                                                      actions: <Widget>[
-                                                        new FlatButton (
-                                                          child: new Text ("OK"),
-                                                          onPressed: () {
-                                                              Navigator.of(ctx).pop();
-                                                          },
-                                                        )
-                                                      ],
-                                                    );
-                                                  }
-                                                );
-                                              }
-                                              else {
-                                                showDialog (
-                                                  context: _context,
-                                                  builder: (BuildContext ctx) {
-                                                    return AlertDialog (
-                                                      title: new Text("Out of range."),
-                                                      content: new Text("You are not within range of this area."),
-                                                      actions: <Widget>[
-                                                        new FlatButton (
-                                                          child: new Text("OK"),
-                                                          onPressed: () {
-                                                            Navigator.of(ctx).pop();
-                                                          },
-                                                        )
-                                                      ],
-                                                    );
-                                                  }
-                                                );
-                                              }
-                                            });
-                                            
+
+                                      Geolocator().getCurrentPosition().then((c) {
+
+                                        GeoPoint challengeLoc = snapshot.data.documents[0].data["location"];
+                                        isWithinRange (new LatLng(c.latitude, c.longitude), new LatLng(challengeLoc.latitude, challengeLoc.longitude)).then((bool inRange) {
+                                          if (inRange) {
+                                            completeChallenge (userId, challenges[i]);
+                                            int points = snapshot.data.documents[0].data["points"];
+                                            incrementUsrLevel(userId, points);
+                                            showDialog (
+                                                context: _context,
+                                                builder: (BuildContext ctx) {
+                                                  return AlertDialog (
+                                                    title: new Text("Challenge " + i.toString() + " completed."),
+                                                    content: new Text("You have advanced by " + points.toString() +" " + ((points == 1)? "point" : "points") + "."),
+                                                    actions: <Widget>[
+                                                      new FlatButton (
+                                                        child: new Text ("OK"),
+                                                        onPressed: () {
+                                                          Navigator.of(ctx).pop();
+                                                        },
+                                                      )
+                                                    ],
+                                                  );
+                                                }
+                                            );
+                                          }
+                                          else {
+                                            showDialog (
+                                                context: _context,
+                                                builder: (BuildContext ctx) {
+                                                  return AlertDialog (
+                                                    title: new Text("Out of range."),
+                                                    content: new Text("You are not within range of this area."),
+                                                    actions: <Widget>[
+                                                      new FlatButton (
+                                                        child: new Text("OK"),
+                                                        onPressed: () {
+                                                          Navigator.of(ctx).pop();
+                                                        },
+                                                      )
+                                                    ],
+                                                  );
+                                                }
+                                            );
+                                          }
                                         });
-                                        return;
-                                        //return 0;
-                                      
+
+                                      });
+                                      return;
+                                      //return 0;
+
                                     },
                                     child: Text (
-                                      'Start',
-                                      style: TextStyle (fontSize: 20)
+                                        'Start',
+                                        style: TextStyle (fontSize: 20)
                                     ),
                                   ),
                                 ],
