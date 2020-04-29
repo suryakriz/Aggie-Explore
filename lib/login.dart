@@ -48,6 +48,7 @@ class _LoginPage extends State<Login> {
           userId = await widget.auth.signUp(_email, _password,_username);
           //widget.auth.sendEmailVerification();
           //_showVerifyEmailSentDialog();
+          _showDialog();
           print('Signed up user: $userId');
         }
         setState(() {
@@ -88,6 +89,29 @@ class _LoginPage extends State<Login> {
     });
   }
 
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Successfully Signed Up!"),
+          content: new Text("You can now use your credentials to log into Aggie Explore."),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Got it!"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -97,20 +121,20 @@ class _LoginPage extends State<Login> {
         body: Stack(
           children: <Widget>[
             _showForm(),
-            _showCircularProgress(),
+            //_showCircularProgress(),
           ],
         ));
   }
 
-  Widget _showCircularProgress() {
-    if (_isLoading) {
-      return Center(child: CircularProgressIndicator());
-    }
-    return Container(
-      height: 0.0,
-      width: 0.0,
-    );
-  }
+//  Widget _showCircularProgress() {
+//    if (_isLoading) {
+//      return Center(child: CircularProgressIndicator());
+//    }
+//    return Container(
+//      height: 0.0,
+//      width: 0.0,
+//    );
+//  }
 
 //  void _showVerifyEmailSentDialog() {
 //    showDialog(
