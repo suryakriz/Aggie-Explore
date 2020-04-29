@@ -182,17 +182,52 @@ class FriendsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xffd7f3f5),
       appBar: AppBar(
-        title: Text("Friends Page"),
+        title: Text("Friends"),
         backgroundColor: Color.fromRGBO(80, 0, 0, 1.0),
       ),
       body: Center(
-        child:
-        Column(
-          children: [
-            Text('Go back!'),
+        child: StreamBuilder (
+          stream: Firestore.instance.collection("user_info").document(userId).snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) { 
+              return new Text("Go back!");
+            }
 
-          ],
+            var friendsList = snapshot.data["friends"];
+            
+            List<Widget> friendsContainers = [];
+            for (int i = 0; i < friendsList.length; i++) {
+              friendsContainers.add(
+                  Container (
+                    padding: EdgeInsets.all(16.0),
+                    margin: EdgeInsets.all(16.0),
+                    child: StreamBuilder (
+                      stream: Firestore.instance.collection("user_info").document(friendsList[i]).snapshots(),
+                      builder: (context2, snapshot2) {
+                        return Column (
+                          children: <Widget>[
+                            RichText (
+                              text: TextSpan (
+                                text: snapshot2.data["username"] + "    Lvl " + snapshot2.data["level"].toString(),
+                                style: TextStyle (
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w400,
+                                      color: Color.fromRGBO(80, 0, 0, 1.0),
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      }
+                    ),
+                  ),
+              );
+            }
+
+            return ListView(children: friendsContainers);
+          }
         ),
+        
       ),
       bottomNavigationBar: BottomAppBar(
           color: Color.fromRGBO(80, 0, 0, 1.0),
