@@ -39,16 +39,16 @@ class HomePage extends State<Home> {
         Firestore.instance.collection("Markers").where("challenge number", isEqualTo: c_nos[i]).getDocuments().then((querySnapshot) {
           if (querySnapshot.documents.length != 0) {
               GeoPoint geo_pt = querySnapshot.documents[0].data["location"];
-                  markers.add(
-                      Marker (
-                        markerId: MarkerId('Challenge ' + (i).toString()),
-                        draggable: false,
-                        position: LatLng(geo_pt.latitude, geo_pt.longitude),
-                        infoWindow: InfoWindow (
-                          title: 'Challenge ' + (i).toString(),
-                        ),
-                      )
-                  );
+              markers.add(
+                  Marker (
+                    markerId: MarkerId('Challenge ' + (i).toString()),
+                    draggable: false,
+                    position: LatLng(geo_pt.latitude, geo_pt.longitude),
+                    infoWindow: InfoWindow (
+                      title: 'Challenge ' + (i).toString(),
+                    ),
+                  )
+              );
               setState(() {});
           }
         });
@@ -322,12 +322,14 @@ class ProfilePage extends StatelessWidget {
                                             isWithinRange (new LatLng(c.latitude, c.longitude), new LatLng(challengeLoc.latitude, challengeLoc.longitude)).then((bool inRange) {
                                               if (inRange) {
                                                 completeChallenge (userId, challenges[i]);
+                                                int points = snapshot.data.documents[0].data["points"];
+                                                incrementUsrLevel(userId, points);
                                                 showDialog (
                                                   context: _context,
                                                   builder: (BuildContext ctx) {
                                                     return AlertDialog (
-                                                      title: new Text("Challenge completed."),
-                                                      content: new Text("Challenge " + (i).toString() + " has been completed."),
+                                                      title: new Text("Challenge " + i.toString() + " completed."),
+                                                      content: new Text("You have advanced by " + points.toString() +" " + ((points == 1)? "point" : "points") + "."),
                                                       actions: <Widget>[
                                                         new FlatButton (
                                                           child: new Text ("OK"),
