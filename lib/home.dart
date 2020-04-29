@@ -38,18 +38,18 @@ class HomePage extends State<Home> {
         print("\n\n\n\n\n\n\nIteration " + (i).toString() + "\n\n\n\n\n\n\n");
         Firestore.instance.collection("Markers").where("challenge number", isEqualTo: c_nos[i]).getDocuments().then((querySnapshot) {
           if (querySnapshot.documents.length != 0) {
-              GeoPoint geo_pt = querySnapshot.documents[0].data["location"];
-              markers.add(
-                  Marker (
-                    markerId: MarkerId('Challenge ' + (i).toString()),
-                    draggable: false,
-                    position: LatLng(geo_pt.latitude, geo_pt.longitude),
-                    infoWindow: InfoWindow (
-                      title: 'Challenge ' + (i).toString(),
-                    ),
-                  )
-              );
-              setState(() {});
+            GeoPoint geo_pt = querySnapshot.documents[0].data["location"];
+            markers.add(
+                Marker (
+                  markerId: MarkerId('Challenge ' + (i).toString()),
+                  draggable: false,
+                  position: LatLng(geo_pt.latitude, geo_pt.longitude),
+                  infoWindow: InfoWindow (
+                    title: 'Challenge ' + (i).toString(),
+                  ),
+                )
+            );
+            setState(() {});
           }
         });
       }
@@ -187,50 +187,50 @@ class FriendsPage extends StatelessWidget {
       ),
       body: Center(
         child: StreamBuilder (
-          stream: Firestore.instance.collection("user_info").document(userId).snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) { 
-              return new Text("Go back!");
-            }
+            stream: Firestore.instance.collection("user_info").document(userId).snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return new Text("Go back!");
+              }
 
-            var friendsList = snapshot.data["friends"];
-            
-            List<Widget> friendsContainers = [];
-            for (int i = 0; i < friendsList.length; i++) {
-              friendsContainers.add(
+              var friendsList = snapshot.data["friends"];
+
+              List<Widget> friendsContainers = [];
+              for (int i = 0; i < friendsList.length; i++) {
+                friendsContainers.add(
                   Container (
                     padding: EdgeInsets.all(16.0),
                     margin: EdgeInsets.all(16.0),
                     child: StreamBuilder (
-                      stream: Firestore.instance.collection("user_info").document(friendsList[i]).snapshots(),
-                      builder: (context2, snapshot2) {
-                        if (!snapshot2.hasData) {
+                        stream: Firestore.instance.collection("user_info").document(friendsList[i]).snapshots(),
+                        builder: (context2, snapshot2) {
+                          if (!snapshot2.hasData) {
                             return new Text('Waiting for user friend data...');
-                        }
-                        return Column (
-                          children: <Widget>[
-                            RichText (
-                              text: TextSpan (
-                                text: snapshot2.data["username"] + "    Lvl " + snapshot2.data["level"].toString(),
-                                style: TextStyle (
+                          }
+                          return Column (
+                            children: <Widget>[
+                              RichText (
+                                text: TextSpan (
+                                  text: snapshot2.data["username"] + "    Lvl " + snapshot2.data["level"].toString(),
+                                  style: TextStyle (
                                     fontSize: 30,
                                     fontWeight: FontWeight.w400,
-                                      color: Color.fromRGBO(80, 0, 0, 1.0),
+                                    color: Color.fromRGBO(80, 0, 0, 1.0),
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
-                        );
-                      }
+                              )
+                            ],
+                          );
+                        }
                     ),
                   ),
-              );
-            }
+                );
+              }
 
-            return ListView(children: friendsContainers);
-          }
+              return ListView(children: friendsContainers);
+            }
         ),
-        
+
       ),
       bottomNavigationBar: BottomAppBar(
           color: Color.fromRGBO(80, 0, 0, 1.0),
@@ -302,10 +302,11 @@ class ProfilePage extends StatelessWidget {
 
                 var l = <Widget>[
                   Container(
-                    padding: EdgeInsets.all(16.0),
-                    margin: EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(12.0),
+                    margin: EdgeInsets.all(12.0),
                     child:
-                    Text('Current Challenges',
+                    Text('Current Challenges:',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         //backgroundColor: Colors.yellow,
                         fontSize: 30,
@@ -323,8 +324,8 @@ class ProfilePage extends StatelessWidget {
                 for (var i = 0; i < challenges.length; i++) {
                   l.add(
                     Container(
-                        padding: EdgeInsets.all(16.0),
-                        margin: EdgeInsets.all(16.0),
+                        padding: EdgeInsets.all(12.0),
+                        margin: EdgeInsets.all(12.0),
                         child: StreamBuilder(
                             stream: Firestore.instance.collection("Markers").where("challenge number", isEqualTo: challenges[i]).snapshots(),
                             builder: (_context, snapshot) {
@@ -335,8 +336,9 @@ class ProfilePage extends StatelessWidget {
                               return Column (
                                 children: <Widget>[
                                   RichText (
+                                    textAlign: TextAlign.center,
                                     text: TextSpan(
-                                        text: "Challege " + challenges[i].toString(),
+                                        text: "Challenge " + challenges[i].toString() + ":\n",
                                         style: TextStyle(
                                           //backgroundColor: Colors.yellow,
                                           fontSize: 30,
@@ -346,6 +348,7 @@ class ProfilePage extends StatelessWidget {
                                         children: <TextSpan>[
                                           TextSpan(
                                             text: snapshot.data.documents[0].data["name"],
+
                                             style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Color.fromRGBO(80, 0, 0, 1.0),),
                                           )
                                         ]
@@ -407,7 +410,7 @@ class ProfilePage extends StatelessWidget {
                                       
                                     },
                                     child: Text (
-                                      'BUTTON',
+                                      'Start',
                                       style: TextStyle (fontSize: 20)
                                     ),
                                   ),
