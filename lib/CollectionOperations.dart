@@ -47,3 +47,21 @@ Future<bool> isWithinRange(LatLng position, LatLng target) async {
 }
 
 
+Future<void> beginChallenge(String user_id, int c_no) async {
+  await _removeFromUnstartedChallenges(user_id, c_no);
+  await _addToCurrentChallenges(user_id, c_no);
+}
+
+    Future<void> _removeFromUnstartedChallenges(String user_id, int c_no) {
+      var list = List<int>();
+      list.add(c_no);
+      Firestore.instance.collection("user_info").document(user_id).updateData({"unstarted challenges": FieldValue.arrayRemove(list)});
+    }
+
+    Future<void> _addToCurrentChallenges(String user_id, int c_no) {
+      var list = List<int>();
+      list.add(c_no);
+      Firestore.instance.collection("user_info").document(user_id).updateData({"current challenges": FieldValue.arrayUnion(list)});
+    }
+
+

@@ -358,7 +358,7 @@ class ProfilePage extends StatelessWidget {
                                   RichText (
                                       textAlign: TextAlign.center,
                                       text: TextSpan(
-                                          text: "Challenge " + challenges[i].toString() + ":\n",
+                                          text: "Challenge " + challenges[i].toString() + "(0/1):\n",
                                           style: TextStyle(
                                             //backgroundColor: Colors.yellow,
                                             fontSize: 30,
@@ -441,6 +441,144 @@ class ProfilePage extends StatelessWidget {
                     ),
                   );
                 }
+
+                /*** Completed challenges. ***/
+                l.add (
+                  Container (
+                    padding: EdgeInsets.all(12.0),
+                    margin: EdgeInsets.all(12.0),
+                    child: Text ('Completed Challenges:',
+                          textAlign: TextAlign.center,
+                          style: TextStyle (
+                            fontSize: 30,
+                            fontWeight: FontWeight.w400,
+                            color: Color.fromRGBO(80, 0, 0, 1.0),
+                          ),
+                    ),
+                  ),
+                );
+
+                List<int> completed = List.from(usrDoc["completed challenges"]);
+                for (int i = 0; i < completed.length; i++) {
+                  l.add (
+                    Container (
+                      padding: EdgeInsets.all(12.0),
+                      margin: EdgeInsets.all(12.0),
+                      child: StreamBuilder (
+                        stream: Firestore.instance.collection("Markers").where("challenge number", isEqualTo: completed[i]).snapshots(),
+                        builder: (_context2, snapshot2) {
+                            if (!snapshot2.hasData) {
+                                return RichText(text: TextSpan(text: 'Waiting for data...'));
+                            }
+                            return Column (
+                                children: <Widget>[
+                                    RichText (
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan (
+                                        text: "Challenge " + completed[i].toString() + "(1/1):\n",
+                                        style: TextStyle (
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w400,
+                                            color: Color.fromRGBO(80, 0, 0, 1.0),
+                                        ),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: snapshot2.data.documents[0].data["name"],
+                                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Color.fromRGBO(80, 0, 0, 1.0),),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                ],
+                            );
+                        }
+                      ),
+                    ),
+                  );
+                }
+
+
+                /*** Unstarted challenges ***/
+
+                l.add (
+                  Container (
+                      padding: EdgeInsets.all(12.0),
+                      margin: EdgeInsets.all(12.0),
+                      child: Text('Unstarted Challenges:',
+                      textAlign: TextAlign.center,
+                      style: TextStyle (
+                          fontSize: 30,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromRGBO(80, 0, 0, 1.0),
+                      ),
+                      )
+                  ),
+                );
+
+                List<int> unstartedChallenges = List.from(usrDoc["unstarted challenges"]);
+                for (int i = 0; i < unstartedChallenges.length; i++) {
+                  l.add (
+                    Container (
+                      padding: EdgeInsets.all(12.0),
+                      margin: EdgeInsets.all(12.0),
+                      child: StreamBuilder (
+                        stream: Firestore.instance.collection("Markers").where("challenge number", isEqualTo: unstartedChallenges[i]).snapshots(),
+                        builder: (_context2, snapshot2) {
+                          if (!snapshot2.hasData) {
+                              return RichText(text: TextSpan(text: 'Waiting for data...'));
+                          }
+                          return Column (
+                              children: <Widget>[
+                                  RichText (
+                                      textAlign: TextAlign.center,
+                                      text: TextSpan (
+                                          text: "Challenge " + unstartedChallenges[i].toString() + "(0/1):\n",
+                                          style: TextStyle (
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w400,
+                                              color: Color.fromRGBO(80, 0, 0, 1.0),
+                                          ),
+                                          children: <TextSpan>[
+                                              TextSpan (
+                                                  text: snapshot2.data.documents[0].data["name"],
+                                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: Color.fromRGBO(80, 0, 0, 1.0),),
+                                              ),
+                                          ],
+                                      ),
+                                  ),
+                                  RaisedButton (
+                                      child: Text('Begin Challenge', style: TextStyle (fontSize: 20)),
+                                      onPressed: () {
+
+                                          beginChallenge(userId, unstartedChallenges[i]);
+                                          showDialog (
+                                              context: _context2,
+                                              builder: (BuildContext ctx) {
+                                                  return AlertDialog (
+                                                      title: new Text ("Challenge started."),
+                                                      content: new Text("Challenge " + unstartedChallenges[i].toString() + " has begun."),
+                                                      actions: <Widget>[
+                                                          new FlatButton (
+                                                              child: new Text ("OK"),
+                                                              onPressed: () {
+                                                                  Navigator.of(ctx).pop();
+                                                              }
+                                                          ),
+                                                      ],
+                                                  );
+                                              }
+                                          );
+
+                                      }
+                                  ),
+                              ],
+                          );
+                        }
+                      ),
+                    ),
+                  );
+                }
+
                 return ListView(children: l);
               }
           )
