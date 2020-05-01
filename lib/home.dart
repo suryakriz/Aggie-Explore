@@ -63,6 +63,15 @@ class HomePage extends State<Home> {
         _coordinates = LatLng(c.latitude, c.longitude);
         _gotCoords = true;
       });
+      markers.add(
+        Marker(
+          markerId: MarkerId("Current Location"),
+          draggable: false,
+          position: LatLng(c.latitude, c.longitude),
+          infoWindow: InfoWindow(title: "Current Location"),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+        )
+      );
     });
 
   }
